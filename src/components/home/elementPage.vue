@@ -2,13 +2,11 @@
   <section class="elementPage">
     <v-container>
       <v-row class="content">
-        <h3>I'M A CUSHION DESIGNER</h3>
+        <h3>{{ $t('misc.cushionDesigner') }}</h3>
         <p>
-          Based in San Francisco, California I design trendy and fashion
-          Cushions, since I have memory I always had a tendency to design and
-          illustration.
+        {{ $t('misc.basedFrancisco') }}
         </p>
-        <button>learn more</button>
+        <button>{{ $t('buttons.learnMore') }}</button>
       </v-row>
       <v-row class="image">
         <v-col
@@ -46,7 +44,8 @@
     text-align: center;
     @media (max-width: 768px) {
       & {
-        width: 100%;
+        width: 99%;
+        padding: 0 10px ;
         margin: auto;
       }
     }

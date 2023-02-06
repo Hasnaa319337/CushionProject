@@ -8,15 +8,11 @@
         data-aos-duration="1500"
       >
         <v-col cols="12" lg="3" class="content">
-          <h3>BEGINNINGS</h3>
+          <h3> {{ $t('misc.beginings') }} </h3>
           <p>
-            Credibly innovate granular internal or organic sources whereas high
-            standards in web-readiness. Energistically scale future-proof core
-            competencies vis-a-vis impactful experiences.
+         {{ $t('misc.Credibly') }}
           </p>
-          <p>
-            Dramatically synthesize integrated schemas. with optimal networks.
-          </p>
+          
         </v-col>
         <v-col cols="12" lg="4" class="image">
           <img
@@ -40,7 +36,7 @@
           />
         </v-col>
         <v-col cols="12" lg="3" class="content">
-          <h3>CARRER</h3>
+          <h3>{{ $t('misc.carrer') }}</h3>
           <p>
             Collaboratively administrate turnkey channels whereas virtual
             e-tailers.
@@ -50,7 +46,7 @@
             seamlessly empower fully researched growth strategies.
           </p>
           <p>And interoperable internal or “organic” sources.</p>
-          <button>learn more</button>
+          <button>{{ $t('buttons.learnMore') }}</button>
         </v-col>
       </v-row>
       <hr />
@@ -64,7 +60,7 @@
         data-aos-duration="1500"
       >
         <v-col cols="12" lg="3" class="content">
-          <h3>PRODUCTS</h3>
+          <h3>{{ $t('nav.products') }}</h3>
           <p>
             Seamlessly empower fully researched growth strategies and
             interoperable internal or “organic” sources.
@@ -89,6 +85,7 @@
 <style lang="scss" scoped>
 .aboutCollection {
   margin: var(--margin-topbotton) 0;
+  overflow: hidden;
   hr {
     width: 65%;
     margin: auto;
@@ -101,7 +98,16 @@
     column-gap: 50px;
     flex-wrap: wrap;
     // height: 55vh;
+    overflow: hidden;
     margin: var(--margin-topbotton) 0;
+    @media (min-width: 481px) and (max-width: 768px) {
+      & {
+        width: 95%;
+        margin: auto;
+        overflow: hidden;
+        margin: 20px auto;
+      }
+    }
   }
   .content {
     // height: 35vh;
@@ -134,7 +140,7 @@
     }
   }
   .image {
-    height: 55vh;
+    // height: 55vh;
     border: 17px solid var(--main-color);
     margin: 0 !important;
     padding: 0 !important;
