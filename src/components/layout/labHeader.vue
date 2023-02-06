@@ -13,7 +13,7 @@
       <ul>
         <router-link to="/"> {{ $t("nav.home") }} </router-link>
         <router-link to="/"> {{ $t("nav.about") }} </router-link>
-        <router-link to="/product"> {{ $t("nav.products") }}</router-link>
+        <router-link to="/all-product"> {{ $t("nav.products") }}</router-link>
         <router-link to="/"> {{ $t("nav.contact") }}</router-link>
      
       </ul>
