@@ -25,11 +25,22 @@ import 'aos/dist/aos.css'; // You can also use <link> for styles
 // ..
 AOS.init();
 
+
+
+
+
 // install primevue
 import PrimeVue from "primevue/config";
 import InputText from "primevue/InputText";
 import Textarea from "primevue/textarea";
 import ToastService from "primevue/toastservice";
+import Sidebar from 'primevue/sidebar';
+import "primeicons/primeicons.css"; //icons
+
+
+
+
+
 // Vuetify
 import "vuetify/styles";
 import { createVuetify } from "vuetify";
@@ -55,7 +66,10 @@ app.use(i18n);
 app.use(store);
 app.use(PrimeVue);
 app.component("InputText", InputText);
-app.component("Textarea", Textarea);
+app.component("TextareaComp", Textarea);
+app.component("SidebarComp", Sidebar);
+
+
 app.use(ToastService);
 app.use(Vuex);
 app.use(VueAxios, axios);
