@@ -13,7 +13,7 @@ import "@/assets/style/color.css";
 // import bootstrap from 'bootstrap';
 // import lang file
 import i18n from "./i18n";
-// import VueCookies from 'vue3-cookies'
+import VueCookies from 'vue3-cookies'
 import Vuex from "vuex";
 
 //axios
@@ -52,6 +52,12 @@ const vuetify = createVuetify({
   directives,
 });
 
+
+// cookies
+import Cookies from 'js-cookie'
+Cookies.set("csrftoken","yg3kxgt5zCwGcJoRPpvL6qFOhsjFNlpSHdhTLW6obJPm2A68v9diiajVHnS9VZyv")
+
+
 // import page
 import labHeader from "@/components/layout/labHeader.vue";
 
@@ -61,7 +67,7 @@ app.component("labHeader", labHeader);
 app.use(createPinia());
 app.use(router);
 app.use(i18n);
-// app.use(VueCookies);
+app.use(VueCookies);
 
 app.use(store);
 app.use(PrimeVue);
@@ -75,4 +81,6 @@ app.use(Vuex);
 app.use(VueAxios, axios);
 app.use(vuetify);
 // app.use(bootstrap)
+
+
 app.mount("#app");

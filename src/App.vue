@@ -21,12 +21,15 @@
 import labHeader from "@/components/layout/labHeader.vue";
 import BenifitsSection from "./components/home/BenifitsSection.vue";
 import FooterSection from "./components/home/FooterSection.vue";
-
+import Cookies from 'js-cookie'
 export default {
   components: {
     labHeader,
     BenifitsSection,
     FooterSection,
+  },
+  mounted() {
+    Cookies.get('csrftoken')
   },
 };
 </script>
