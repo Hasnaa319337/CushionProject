@@ -80,7 +80,7 @@
                   /></v-col>
                 </v-row>
 
-                <Textarea
+                <TextareaComp
                   v-model="form.message"
                   required
                   rows="5"
