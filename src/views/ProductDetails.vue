@@ -1,9 +1,61 @@
 <template>
   <div class="details_section">
+    <!-- Start:: cart component -->
+    <div class="cart">
+      <SidebarComp
+        v-model:visible="visibleRight"
+        :baseZIndex="10000"
+        position="right"
+      >
+        <!-- Start:: Cart Header -->
+        <div class="cart_header">
+          <h3>{{ $t("misc.yourCart") }}</h3>
+          <button @click="visibleRight = false">
+            <i class="pi pi-times"></i>
+          </button>
+        </div>
+        <!-- Start:: Cart Header -->
+        <hr />
+
+        <!-- Start:: Cart Products -->
+        <div class="cart_products">
+          <!-- v-for="product in cart" :key="product.id" -->
+          <div class="cart_product" v-for="item in cart" :key="item.id" >
+            <div class="product_details">
+              <div class="product_image"><img :src="item.image" alt="image" /></div>
+              <div class="product_name">
+                <h5>{{ item.title }}</h5>
+                <h5>$ {{ item.price }} {{ $t("misc.USD") }}</h5>
+                <button @click="removeItem()">{{ $t("buttons.remove") }}</button>
+              </div>
+            </div>
+            <div class="product_qty">
+              <input type="number" v-model="quantity" class="cart_input"/>
+            </div>
+          </div>
+        </div>
+        <!-- End:: Cart Products -->
+
+        <hr />
+        <!-- Start:: Cart Footer -->
+        <div class="cart_footer">
+          <h3>{{ $t("misc.subtotal") }}</h3>
+          <h3>Total</h3>
+        </div>
+        <div class="btn_wrapper">
+          <button class="details_btn">
+            {{ $t("buttons.continueToCheckout") }}
+          </button>
+        </div>
+        <!-- End:: Cart Footer -->
+      </SidebarComp>
+    </div>
+    <!-- End:: cart component -->
+
     <!-- Start:: head Section -->
     <div class="head_section">
-        <div class="bg-top"></div>
-        <div class="bg-botttom"></div>
+      <div class="bg-top"></div>
+      <div class="bg-botttom"></div>
       <v-container>
         <v-row class="details_product">
           <v-col
@@ -35,14 +87,17 @@
             <div class="product_info">
               <h2>{{ product.title }}</h2>
               <h2>${{ product.price }} {{ $t("misc.USD") }}</h2>
-              <form>
+              <div class="add_wrapper">
                 <label>{{ $t("misc.quantity") }}</label>
-                <input type="number" placeholder="1" required />
-                <button type="submit">{{ $t("buttons.addToCart") }}</button>
-              </form>
+                <input type="number" v-model="quantity" required />
+                <button @click= "addToCart" class="details_btn">
+                  {{ $t("buttons.addToCart") }}
+                </button>
+              </div>
             </div>
           </v-col>
         </v-row>
+        <CartComponent />
       </v-container>
     </div>
 
@@ -77,7 +132,7 @@
         </v-row>
       </v-container>
     </div>
-<!-- End:: Images -->
+    <!-- End:: Images -->
     <!-- Start:: related products -->
     <div class="related_wrapper">
       <v-container>
@@ -119,19 +174,43 @@ export default {
   props: ["id"],
   data() {
     return {
+      visibleRight: false,
       product: {
         required: true,
         type: Object,
       },
+      details: this.$route.params,
     };
+  },
+  methods: {
+    addToCart() {
+      this.$store.dispatch("addToCart", this.details);
+      this.visibleRight = true;
+      // if (this.initialQuantity < this.product.quantity) {
+      //   this.initialQuantity++;
+      // } else {
+      //   this.initialQuantity === this.products.quantity;
+      // }
+      // this.display = 'block'
+    },
+    removeItem(){
+      this.$store.dispatch("removeItem", this.details)
+    }
   },
   computed: {
     products() {
       return this.$store.getters.products;
     },
+    cart() {
+      return this.$store.getters.cart;
+    },
+    quantity() {
+      return this.$store.getters.quantity;
+    },
   },
   mounted() {
     this.product = this.products.find((product) => product.id == this.id);
+    this.details = this.product;
   },
 };
 </script>
@@ -166,11 +245,11 @@ export default {
     }
   }
   .head_section {
-position: relative;
+    position: relative;
     padding: 50px 0;
     .info_wrapper {
       height: 500px;
-margin: 20px 0;
+      margin: 20px 0;
       background-color: #b08ead;
       color: white;
 
@@ -191,7 +270,7 @@ margin: 20px 0;
         h2:last-of-type {
           font-size: 26px;
         }
-        form {
+        .add_wrapper {
           width: 100%;
           display: block;
           label {
@@ -202,32 +281,6 @@ margin: 20px 0;
             letter-spacing: 1.5px;
             text-transform: uppercase;
             display: block;
-          }
-          input {
-            display: block;
-            background: white;
-            width: 50px;
-            height: 35px;
-            outline: none;
-            border: none;
-            font-size: 20px;
-            padding: 5px;
-            text-align: center;
-          }
-          button {
-            background: #ceb3cb;
-            font-family: Roboto, sans-serif;
-            display: block;
-            width: 100%;
-            text-align: center;
-            font-size: 15px;
-            height: 45px;
-            margin: 20px 0;
-            transition: 0.3s all ease-in-out;
-            &:hover {
-              opacity: 0.8;
-              transition: 0.3s all ease-in-out;
-            }
           }
         }
       }
@@ -246,7 +299,7 @@ margin: 20px 0;
     padding-bottom: 50px;
     .text_right {
       text-align: right;
-      margin-top:50px;
+      margin-top: 50px;
       .back_products {
         transition: opacity 200ms ease;
         font-family: Roboto, sans-serif;
@@ -265,22 +318,126 @@ margin: 20px 0;
 }
 
 .bg-top {
-    position: absolute;
-    left: 0px;
-    top: 0px;
-    right: 0px;
-    height: 56%;
-    background-color: #c9adc6;
-    z-index: -20;
+  position: absolute;
+  left: 0px;
+  top: 0px;
+  right: 0px;
+  height: 56%;
+  background-color: #c9adc6;
+  z-index: -20;
 }
 .bg-botttom {
-    position: absolute;
-    left: 0px;
-    right: 0px;
-    bottom: 0px;
-    height: 44%;
-    background-color: #d6bbd3;
-    z-index: -20;
+  position: absolute;
+  left: 0px;
+  right: 0px;
+  bottom: 0px;
+  height: 44%;
+  background-color: #d6bbd3;
+  z-index: -20;
 }
 
+// Start:: Style Cart
+
+.p-sidebar-right .p-sidebar {
+  width: 26rem;
+  color: #5f4d5d;
+  font-family: "normal", sans-serif !important;
+}
+.p-sidebar-mask.p-component-overlay {
+  z-index: 10001;
+  background: #000000d6;
+}
+.p-sidebar-content {
+  background: white;
+}
+.cart_header,
+.cart_footer,
+.product_details,
+.cart_product {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  justify-items: center;
+  padding: 20px 10px;
+}
+.product_details{
+  column-gap: 10px;
+}
+.p-sidebar-header {
+  display: none;
+}
+hr {
+  overflow: visible;
+  height: 0;
+  background: rgb(0 0 0 / 3%);
+  height: 1.5px;
+  border: none;
+}
+.product_details {
+  font-family: "normal", monospace;
+  .product_image {
+    width: 60px;
+    img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+  }
+  .product_name {
+    h5 {
+      font-size: 20px;
+      color: #5f4d5d;
+
+      &:last-of-type {
+        color: #b0b0b0;
+        font-size: 16px;
+      }
+    }
+    button {
+      color: #5f4d5d;
+      transition: opacity 0.3s ease-in-out;
+
+      &:hover {
+        opacity: 0.8;
+      }
+    }
+  }
+}
+.cart_input{
+  background: #dddddd38;
+}
+// End:: Style Cart
+
+// Start:: global btn , input
+.btn_wrapper {
+  padding: 20px 10px;
+  color: white;
+}
+.details_btn {
+  background: #ceb3cb;
+  font-family: Roboto, sans-serif;
+  display: block;
+  width: 100%;
+  text-align: center;
+  font-size: 15px;
+  height: 45px;
+  margin: 20px 0;
+  transition: 0.3s all ease-in-out;
+  &:hover {
+    opacity: 0.8;
+    transition: 0.3s all ease-in-out;
+  }
+}
+input {
+  display: block;
+  background: white;
+  width: 50px;
+  height: 35px;
+  outline: none;
+  border: none;
+  font-size: 20px;
+  padding: 5px;
+  text-align: center;
+}
+// End:: global btn
 </style>
