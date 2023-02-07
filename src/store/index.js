@@ -275,10 +275,52 @@ const store = createStore({
           ],
         },
       ],
+      cart: [],
+      currentItemcount: 0,
+      quantity:1
     };
   },
-  mutations: {},
-  actions() {},
+  mutations: {
+    setCurrentUserData(state, payload) {
+      if (payload.token) {
+        state.userToken = payload.token;
+        localStorage.setItem("marial_app_user_token", payload.token);
+      }
+    },
+    addItemToCart(state, payload) {
+      let item = payload;
+      item = { ...item, qty: 1 };
+      if (state.cart.length > 0) {
+        let bool = state.cart.some((i) => i.id === item.id);
+        if (bool) {
+          let itemindex = state.cart.findIndex((el) => el.id === item.id);
+          state.cart[itemindex]["qty"] += 1;
+        } else {
+          state.cart.push(item);
+          state.currentItemcount++;
+        }
+      } else {
+        state.cart.push(item);
+        state.currentItemcount++;
+      }
+    },
+    removeItem(state, payload) {
+      let itemindex = state.cart.findIndex((el) => el.id === payload.id);
+      state.cart.splice(itemindex);
+      console.log("remove");
+      console.log(state.cart);
+      console.log(itemindex);
+      console.log(payload);
+    },
+  },
+  actions: {
+    addToCart(context, payload) {
+      context.commit("addItemToCart", payload);
+    },
+    removeItem(context, payload) {
+      context.commit("removeItem", payload);
+    },
+  },
 
   getters: {
     products(state) {
@@ -287,6 +329,15 @@ const store = createStore({
     elementPage(state) {
       return state.elementPage;
     },
+    cart(state) {
+      return state.cart;
+    },
+    quantity(state){
+      return state.quantity
+    },
+    currentItemcount(state) {
+      return state.currentItemcount;
+    }
   },
 });
 
