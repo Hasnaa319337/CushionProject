@@ -3,11 +3,10 @@
     <elementPage />
     <AboutSection />
     <abouutCollection />
-    <spring-collection/>
+    <spring-collection />
     <product-section />
     <contact-section />
     <newsletters-section />
-  
   </div>
 </template>
 <script>
@@ -18,7 +17,7 @@ import NewslettersSection from "@/components/home/NewslettersSection.vue";
 import AboutSection from "../components/home/aboutSection.vue";
 import abouutCollection from "../components/home/abouutCollection.vue";
 
-import SpringCollection from '../components/home/SpringCollection.vue';
+import SpringCollection from "../components/home/SpringCollection.vue";
 export default {
   components: {
     ProductSection,
@@ -27,7 +26,7 @@ export default {
     abouutCollection,
     NewslettersSection,
     ContactSection,
- 
+
     SpringCollection,
   },
 };
